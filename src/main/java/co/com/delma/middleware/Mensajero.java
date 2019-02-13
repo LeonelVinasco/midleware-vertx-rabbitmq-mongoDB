@@ -37,7 +37,7 @@ public class Mensajero extends AbstractVerticle  {
 	        JsonObject amqpMsgPayload = new JsonObject();
 	        amqpMsgPayload.put(AmqpConstants.BODY, "myStringContent" + count);
 
-	        //producer.send(amqpMsgPayload);
+	        producer.send(amqpMsgPayload);
 
 	        System.out.println("Sent message: " + count++);
 	      });
