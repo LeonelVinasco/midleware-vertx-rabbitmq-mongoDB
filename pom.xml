@@ -16,6 +16,21 @@
 
   <dependencies>
   <dependency>
+       <groupId>org.slf4j</groupId>
+       <artifactId>slf4j-api</artifactId>
+       <version>1.7.5</version>
+   </dependency>
+   <dependency>
+       <groupId>org.slf4j</groupId>
+       <artifactId>slf4j-simple</artifactId>
+       <version>1.6.4</version>
+   </dependency>
+  <dependency>
+ <groupId>io.vertx</groupId>
+ <artifactId>vertx-rabbitmq-client</artifactId>
+ <version>3.6.3</version>
+</dependency>
+  <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
       <version>3.5.4</version>
