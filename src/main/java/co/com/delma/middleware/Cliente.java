@@ -12,6 +12,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.rabbitmq.RabbitMQClient;
 import io.vertx.rabbitmq.RabbitMQOptions;
 
+import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import com.rabbitmq.client.Channel;
@@ -26,7 +27,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 
 public class Cliente extends AbstractVerticle{
-	private final static String QUEUE_NAME = "Pila2";
+	private final static String QUEUE_NAME = "Pila";
 	private static final String QUEUE = "hello";
 	private static String TAG = Cliente.class.getSimpleName();
     private static RabbitMQClient client;
@@ -39,48 +40,41 @@ public class Cliente extends AbstractVerticle{
     
     @Override
     public void start() throws Exception{
-    	RabbitMQOptions config = new RabbitMQOptions();
-		// Each parameter is optional
-		
+  	 
+    	 RabbitMQOptions config = new RabbitMQOptions();
+	        // Each parameter is optional
+	        // The default parameter with be used if the parameter is not set
+	        //config.setUser("test");
+	        //config.setPassword("test");
+	        config.setHost("localhost"); // adresse IP du cluster rabbitMQ
+	        config.setPort(5672);
+	       
+	        RabbitMQClient client = RabbitMQClient.create(vertx, config);
+	        
+  	  vertx.setPeriodic(2000, id -> { //mandar dato cada 200ms
+  	 	  
+  		 
+  		    client.start(r -> {
+  		    	client.basicGet(QUEUE_NAME, true, getResult -> {
+  		    	  if (getResult.succeeded()) {
+  		    	    JsonObject msg = getResult.result();
+  		    	    System.out.println("Got message: " + msg.getString("body"));
+  		    	  } else {
+  		    	    getResult.cause().printStackTrace();
+  		    	  }
+  		    	});
+  		    	
+  		    });
+  		  
 
-		RabbitMQClient client = RabbitMQClient.create(vertx, config);
-
-		client.start(v-> {
-			vertx.setPeriodic(100, id ->{
-				client.basicGet(QUEUE_NAME, true, getResult ->{
-					if (getResult.succeeded()) {
-						JsonObject msg =getResult.result();
-						String response = msg.getString("body");
-						System.out.println("Se obtuvo el mensaje: "+response);
-					}else {
-						getResult.cause().printStackTrace();
-					}
-					
-				});
-				
-				
-				
-				
-			});
-			
-			
-		});
-		
-		
-        	
-     
-		
-
-		
-		
-    	
-    	
+  	  });
+  	  
+  	  
+  	  
+  	  
+  	  
     }
     
     
     
-}
-    
-
-	
-   
+  }
