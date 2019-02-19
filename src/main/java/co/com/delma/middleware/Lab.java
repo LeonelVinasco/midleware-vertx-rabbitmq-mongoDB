@@ -96,19 +96,10 @@ public class Lab extends AbstractVerticle{
     		    	
   		    	    System.out.println("Got message: " + msg.getString("body"));
   		    	    
-  		    	  mongoClient.save("products", product1, id2 -> {
+  		    	  mongoClient.save("products", msg, id2 -> {
   		    	      System.out.println("Inserted id: " + id2.result());
 
-  		    	      mongoClient.find("products", new JsonObject().put("itemId", "12345"), res -> {
-  		    	        System.out.println("Name is " + res.result().get(0).getString("name"));
-
-  		    	        mongoClient.removeDocuments("products", new JsonObject().put("itemId", "12345"), rs -> {
-  		    	          if (rs.succeeded()) {
-  		    	            System.out.println("Product removed ");
-  		    	          }
-  		    	        });
-
-  		    	      });
+  		    	     
 
   		    	    });
   		    	    
