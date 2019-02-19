@@ -3,6 +3,7 @@ import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageProducer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rabbitmq.RabbitMQClient;
@@ -30,7 +31,7 @@ public class Sender extends AbstractVerticle {
       
   }
   @Override
-  public void start() throws Exception{
+  public void start(Future<Void> fut) throws Exception{
 	 
 	  RabbitMQOptions config = new RabbitMQOptions();
       // Each parameter is optional
@@ -41,12 +42,18 @@ public class Sender extends AbstractVerticle {
       config.setPort(5672);
      
       RabbitMQClient client = RabbitMQClient.create(vertx, config);
-     
-	  vertx.setPeriodic(2000, id -> { //mandar dato cada 200ms
+     // 
+    
+      
+	  vertx.setPeriodic(200, id -> { //mandar dato cada 200ms
 	 	  
-		  
+		 
+		 
+			// This handler will be call
 		    client.start(r -> {
-		    	JsonObject message = new JsonObject().put("body", "Hello RabbitMQ, from Vert.x !");
+		    	count++;
+		    	client.queueDeclare(QUEUE_NAME, true, false, false, null);
+		    	JsonObject message = new JsonObject().put("body", "Hello RabbitMQ "+count + ", from Vert.x !");
 		    	client.basicPublish("",  QUEUE_NAME, message, pubResult -> {
 		    	  if (pubResult.succeeded()) {
 		    	    System.out.println("Message published !"+ message+"my.queue");
@@ -56,6 +63,8 @@ public class Sender extends AbstractVerticle {
 		    	});
 		    	
 		    });
+		    
+		   
 		  
 		  
 
