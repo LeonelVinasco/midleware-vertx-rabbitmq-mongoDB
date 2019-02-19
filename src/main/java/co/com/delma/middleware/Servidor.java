@@ -21,10 +21,8 @@ import io.vertx.rxjava.core.AbstractVerticle;
 import io.vertx.rxjava.core.http.HttpServer;
 
 
-/*Esta clase usa la librería RabbitMQClient. aún no funciona por
- * que falta hacer correctamente la parte de client.start(EventHandler). 
- * Aprender sobre EventHandler Handler<AsyncResult<Void>>
- *  y funciones Lambda
+/*En esta clase solo se implementa un servidor HTTP
+ * 
  */
 
 

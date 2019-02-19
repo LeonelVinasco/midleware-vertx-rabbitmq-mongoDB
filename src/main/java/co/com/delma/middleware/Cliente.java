@@ -24,10 +24,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-/*Esta clase usa la librería RabbitMQClient. aún no funciona por
- * que falta hacer correctamente la parte de client.start(EventHandler). 
- * Aprender sobre EventHandler Handler<AsyncResult<Void>>
- *  y funciones Lambda
+/*Esta clase lee el valor de la pila de rabbitMQ y envía su valor 
+ * al body del explorador con el servidor HTTP
  */
 
 
@@ -83,11 +81,11 @@ public class Cliente extends AbstractVerticle{
   	Vertx vertx = Vertx.vertx();
     System.out.println("===================Test start===================");
     HttpClient client1 = vertx.createHttpClient();
-//    client1.get(8080, "localhost", "/api/prod/dfsad", response -> {
+//    client1.get(8080, "localhost", "/", response -> {
 //        System.out.println("Received response with status code " + response.statusCode());
 //    }).end();
   	
-    client1.post(8080, "localhost", "/images", response -> {
+    client1.post(8080, "localhost", "/", response -> {
         System.out.println("ahí vamos " + response.statusCode());
     }).end();
  /*/
